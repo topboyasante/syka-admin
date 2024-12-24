@@ -1,10 +1,11 @@
-"use server";
+'use server';
 
-import http from "@/lib/axios";
-import { AxiosResponse } from "axios";
-import { HandleApiError } from "..";
-import { ApiResponse, ErrorResponse } from "../types";
-import { Branch, BranchResponse } from "./types";
+import http from '@/lib/axios';
+import { AxiosResponse } from 'axios';
+import { HandleApiError } from '..';
+import { ApiResponse, ErrorResponse } from '../types';
+import { Branch, BranchResponse } from './types';
+import { BranchFormValues } from '@/app/(system)/(main)/components/branches/create-branch';
 
 /**
  * Fetches all branches
@@ -13,7 +14,7 @@ import { Branch, BranchResponse } from "./types";
 export async function fetchBranches(): Promise<Branch[] | ErrorResponse> {
   try {
     const response: AxiosResponse<ApiResponse<Branch[]>> = await http.get(
-      "/branches"
+      '/branches'
     );
     return response.data.data;
   } catch (error) {
@@ -43,11 +44,11 @@ export async function fetchBranch(id: string): Promise<Branch | ErrorResponse> {
  * @returns Promise with success/error response
  */
 export async function createBranch(
-  values: Omit<Branch, "id">
+  values: Omit<BranchFormValues, 'id'>
 ): Promise<BranchResponse> {
   try {
     const response: AxiosResponse<ApiResponse<Branch>> = await http.post(
-      "/branches",
+      '/branches',
       values
     );
     return {
@@ -67,7 +68,7 @@ export async function createBranch(
  * @returns Promise with success/error response
  */
 export async function editBranch(
-  values: Partial<Branch>,
+  values: Partial<BranchFormValues>,
   id: string
 ): Promise<BranchResponse> {
   try {

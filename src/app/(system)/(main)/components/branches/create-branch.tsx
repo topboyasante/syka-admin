@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import React from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import React from 'react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -18,45 +18,46 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
-import { createBranch } from "@/services/branches";
+} from '@/components/ui/select';
+import { useState } from 'react';
+import { createBranch } from '@/services/branches';
+import { toast } from 'sonner';
 
 // Zod validation schema
 const branchFormSchema = z.object({
   name: z
     .string()
-    .min(2, "Branch name must be at least 2 characters")
-    .max(100, "Branch name cannot exceed 100 characters"),
+    .min(2, 'Branch name must be at least 2 characters')
+    .max(100, 'Branch name cannot exceed 100 characters'),
   address: z
     .string()
-    .min(5, "Address must be at least 5 characters")
-    .max(200, "Address cannot exceed 200 characters"),
+    .min(5, 'Address must be at least 5 characters')
+    .max(200, 'Address cannot exceed 200 characters'),
   country: z
     .string()
-    .min(2, "Country must be at least 2 characters")
-    .max(100, "Country name cannot exceed 100 characters"),
+    .min(2, 'Country must be at least 2 characters')
+    .max(100, 'Country name cannot exceed 100 characters'),
   phone: z
     .string()
     .regex(
       /^\+?[1-9]\d{1,14}$/,
-      "Please enter a valid phone number in international format"
+      'Please enter a valid phone number in international format'
     ),
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().email('Please enter a valid email address'),
   parent_branch_id: z.string().optional(),
 });
 
-type BranchFormValues = z.infer<typeof branchFormSchema>;
+export type BranchFormValues = z.infer<typeof branchFormSchema>;
 
 interface CreateBranchProps {
   existingBranches: Array<{
@@ -66,12 +67,12 @@ interface CreateBranchProps {
 }
 
 const defaultValues: BranchFormValues = {
-  name: "",
-  address: "",
-  country: "",
-  phone: "",
-  email: "",
-  parent_branch_id: "",
+  name: '',
+  address: '',
+  country: '',
+  phone: '',
+  email: '',
+  parent_branch_id: '',
 };
 
 function RequiredLabel({ children }: { children: React.ReactNode }) {
@@ -95,12 +96,14 @@ export function CreateBranchModal({ existingBranches }: CreateBranchProps) {
   async function onSubmit(data: BranchFormValues) {
     setIsLoading(true);
     try {
-      //  const res = await createBranch(data);
-
+      const res = await createBranch(data);
+      if (!res?.error) {
+        toast.success('Branch created successfully');
+      }
       form.reset();
       setOpen(false);
     } catch (error) {
-      console.error("Error creating branch:", error);
+      console.error('Error creating branch:', error);
     } finally {
       setIsLoading(false);
     }
@@ -250,7 +253,7 @@ export function CreateBranchModal({ existingBranches }: CreateBranchProps) {
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Creating..." : "Create Branch"}
+                {isLoading ? 'Creating...' : 'Create Branch'}
               </Button>
             </div>
           </form>
