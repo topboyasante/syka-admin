@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import { cn } from '@/lib/utils';
+import React, { useState } from 'react';
 
 export interface ITabType {
   id: number;
@@ -25,10 +25,10 @@ function CustomTabs({ content }: TabProps) {
               key={tab.id}
               type="button"
               onClick={() => setCurrentTab(tab.id)}
-              className={cn("font-semibold px-2 py-1 text-sm", {
-                "bg-[#cdcdcd]": currentTab === tab.id,
-                "rounded-l-md": tab.id === 0,
-                "rounded-r-md": tab.id === content.length - 1,
+              className={cn('font-semibold px-2 py-1 text-sm', {
+                'bg-[#cdcdcd]': currentTab === tab.id,
+                'rounded-l-md': tab.id === 0,
+                'rounded-r-md': tab.id === content.length - 1,
               })}
             >
               {tab.title}

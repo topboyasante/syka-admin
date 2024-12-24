@@ -1,95 +1,15 @@
-'use client';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import DataTable from '@/components/ui/data-table';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Branch } from '@/services/branches/types';
-import { Filter, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { BranchesTableColumns } from './columns';
-import { CreateBranchModal } from './create-branch';
+import { UsersType } from '@/services/users/types';
+import { UserListTableColumns } from './columns';
 
-interface BranchesProps {
-  initialBranches: Branch[];
+interface Users {
+  initialUsers: UsersType[];
 }
 
-interface FilterState {
-  country: string;
-}
-
-type FilterKey = keyof FilterState;
-
-const initialFilterState: FilterState = {
-  country: '',
-};
-
-export default function Branches({ initialBranches }: BranchesProps) {
-  const [search, setSearch] = useState<string>('');
-  const [filters, setFilters] = useState<FilterState>(initialFilterState);
-  const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
-  const [filteredBranches, setFilteredBranches] =
-    useState<Branch[]>(initialBranches);
-
-  const columns = BranchesTableColumns(initialBranches);
-
-  // Get unique countries from the data
-  const uniqueCountries = Array.from(
-    new Set(initialBranches.map((branch) => branch.country))
-  );
-
-  // Effect to handle search and filters
-  useEffect(() => {
-    const filtered = initialBranches.filter((branch) => {
-      const searchMatch =
-        search.trim() === '' ||
-        branch.name.toLowerCase().includes(search.toLowerCase()) ||
-        branch.email.toLowerCase().includes(search.toLowerCase()) ||
-        branch.phone.toLowerCase().includes(search.toLowerCase());
-
-      const countryMatch =
-        !filters.country || branch.country === filters.country;
-
-      return searchMatch && countryMatch;
-    });
-
-    setFilteredBranches(filtered);
-  }, [search, filters, initialBranches]);
-
-  const handleFilterChange = (key: FilterKey, value: string): void => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const handleResetFilters = (): void => {
-    setFilters(initialFilterState);
-    setSearch('');
-    setActiveFiltersCount(0);
-  };
-
-  const handleApplyFilters = (): void => {
-    const count = Object.values(filters).filter(Boolean).length;
-    setActiveFiltersCount(count);
-  };
-
+export default function Users({ initialUsers }: Users) {
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-4">
+      {/* <div className="flex flex-wrap items-center gap-4">
         <div className="flex-1 max-w-sm">
           <Input
             type="search"
@@ -165,10 +85,10 @@ export default function Branches({ initialBranches }: BranchesProps) {
             </PopoverContent>
           </Popover>
         </div>
-      </div>
+      </div> */}
 
       <div>
-        <DataTable columns={columns} data={filteredBranches} />
+        <DataTable columns={UserListTableColumns} data={initialUsers} />
       </div>
     </div>
   );

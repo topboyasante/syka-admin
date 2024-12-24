@@ -1,14 +1,15 @@
-import BranchesTabComponent from "./branches/tab";
+import BranchesTabComponent from './branches/tab';
+import UsersTabComponent from './users/tab';
 
 export const UserManagementTabs = [
   {
     id: 0,
-    title: "Manage All Users",
-    content: <div>hello</div>,
+    title: 'Manage All Users',
+    content: <UsersTabComponent />,
   },
   {
     id: 1,
-    title: "Branches",
+    title: 'Branches',
     content: <BranchesTabComponent />,
   },
 ];
