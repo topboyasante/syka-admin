@@ -10,6 +10,7 @@ export interface Branch {
   ID: string;
   created_at: string;
   updated_at: string;
+  parent_branch_id: string;
 }
 
 export type BranchResponse = ErrorResponse | SuccessResponse;

@@ -1,10 +1,10 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Filter, Plus, X } from "lucide-react";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import DataTable from "@/components/ui/data-table";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -17,22 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import DataTable from "@/components/ui/data-table";
+import { Branch } from "@/services/branches/types";
+import { Filter, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { BranchesTableColumns } from "./columns";
-
-interface Branch {
-  ID: string;
-  name: string;
-  created_by: string;
-  address: string;
-  country: string;
-  phone: string;
-  email: string;
-  created_at: string;
-  updated_at: string;
-}
+import { CreateBranchModal } from "./create-branch";
 
 interface BranchesProps {
   initialBranches: Branch[];
@@ -54,6 +43,8 @@ export default function Branches({ initialBranches }: BranchesProps) {
   const [activeFiltersCount, setActiveFiltersCount] = useState<number>(0);
   const [filteredBranches, setFilteredBranches] =
     useState<Branch[]>(initialBranches);
+
+  const columns = BranchesTableColumns(initialBranches);
 
   // Get unique countries from the data
   const uniqueCountries = Array.from(
@@ -108,12 +99,7 @@ export default function Branches({ initialBranches }: BranchesProps) {
           />
         </div>
         <div className="flex items-center gap-4 ml-auto">
-          <Link href="/branches/add">
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add Branch
-            </Button>
-          </Link>
+          <CreateBranchModal existingBranches={initialBranches} />
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
@@ -182,7 +168,7 @@ export default function Branches({ initialBranches }: BranchesProps) {
       </div>
 
       <div>
-        <DataTable columns={BranchesTableColumns} data={filteredBranches} />
+        <DataTable columns={columns} data={filteredBranches} />
       </div>
     </div>
   );
