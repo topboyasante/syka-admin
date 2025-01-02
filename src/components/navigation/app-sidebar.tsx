@@ -8,11 +8,12 @@ import {
   LayoutDashboard,
   HeadphonesIcon,
   Settings,
+  User,
   Shield,
   ChevronDown,
-} from "lucide-react";
-import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+} from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import React, { useState } from 'react';
 import {
   Sidebar,
   SidebarContent,
@@ -20,74 +21,81 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenu,
-} from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-import { ProgressBarLink } from "@/components/ui/progress-bar";
-import NavHeader from "./nav-header";
-import { NavUser } from "./nav-user";
-import NavCommand from "./nav-command";
-import { Separator } from "../ui/separator";
+} from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import { ProgressBarLink } from '@/components/ui/progress-bar';
+import NavHeader from './nav-header';
+import { NavUser } from './nav-user';
+import NavCommand from './nav-command';
+import { Separator } from '../ui/separator';
+import path from 'path';
 
 const NAV_LINKS = [
   {
     id: 1,
-    name: "User Management",
-    path: "/",
+    name: 'User Management',
+    path: '/',
     icon: Users,
   },
   {
     id: 2,
-    name: "Transaction Monitoring",
-    path: "/transactions",
+    name: 'Transaction Monitoring',
+    path: '/transactions',
     icon: LineChart,
   },
   {
     id: 3,
-    name: "Revenue & Fees",
-    path: "/revenue",
+    name: 'Revenue & Fees',
+    path: '/revenue',
     icon: DollarSign,
   },
   {
     id: 4,
-    name: "Liquidity & Exchange Rate",
-    path: "/liquidity",
+    name: 'Liquidity & Exchange Rate',
+    path: '/liquidity',
     icon: BarChart3,
   },
   {
     id: 5,
-    name: "Compliance & Reporting",
-    path: "/compliance",
+    name: 'Compliance & Reporting',
+    path: '/compliance',
     icon: ClipboardList,
   },
   {
     id: 6,
-    name: "Partner & Bank",
-    path: "/partners",
+    name: 'Partner & Bank',
+    path: '/partners',
     icon: Building2,
   },
   {
     id: 7,
-    name: "Dashboard Analytics",
-    path: "/analytics",
+    name: 'Dashboard Analytics',
+    path: '/analytics',
     icon: LayoutDashboard,
   },
   {
     id: 8,
-    name: "Support & Help Desk",
-    path: "/support",
+    name: 'Support & Help Desk',
+    path: '/support',
     icon: HeadphonesIcon,
   },
   {
     id: 9,
-    name: "System Admin",
-    path: "/admin",
+    name: 'System Admin',
+    path: '/admin',
     icon: Settings,
   },
   {
     id: 10,
-    name: "Security Management",
-    path: "/security",
+    name: 'Security Management',
+    path: '/security',
     icon: Shield,
+  },
+  {
+    id: 11,
+    name: 'Clients',
+    path: '/clients',
+    icon: User,
   },
 ];
 
@@ -109,22 +117,22 @@ const NavigationItem: React.FC<{
         <ProgressBarLink
           href={path}
           className={cn(
-            "flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors",
+            'flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors',
             isActive
-              ? "bg-primary/10 text-primary"
-              : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+              ? 'bg-primary/10 text-primary'
+              : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400'
           )}
         >
           <Icon
             className={cn(
-              "w-5 h-5",
-              isActive ? "text-primary" : "text-gray-500 dark:text-gray-400"
+              'w-5 h-5',
+              isActive ? 'text-primary' : 'text-gray-500 dark:text-gray-400'
             )}
           />
           <span
             className={cn(
-              "text-sm font-medium",
-              isActive && "font-semibold text-primary"
+              'text-sm font-medium',
+              isActive && 'font-semibold text-primary'
             )}
           >
             {name}
@@ -138,9 +146,9 @@ const NavigationItem: React.FC<{
 export function AppSidebar(): JSX.Element {
   const pathname = usePathname();
   const user: User = {
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "/avatars/default.jpg",
+    name: 'John Doe',
+    email: 'john@example.com',
+    avatar: '/avatars/default.jpg',
   };
 
   return (
@@ -158,8 +166,8 @@ export function AppSidebar(): JSX.Element {
               path={item.path}
               icon={item.icon}
               isActive={
-                item.path === "/"
-                  ? pathname === "/"
+                item.path === '/'
+                  ? pathname === '/'
                   : pathname.startsWith(item.path)
               }
             />

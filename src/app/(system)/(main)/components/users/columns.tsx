@@ -20,12 +20,14 @@ export const UserListTableColumns: ColumnDef<UsersType>[] = [
     header: 'User',
     cell: ({ row }) => {
       const rowItem = row.original;
-      console.log(rowItem);
+
       return (
         <UserComponent
-          email={rowItem.user?.email}
-          name={rowItem.user?.full_name}
-          img_url={rowItem.user?.img_url}
+          email={rowItem.email}
+          name={rowItem.first_name + ' ' + rowItem.last_name}
+          img_url={`https://api.dicebear.com/9.x/notionists/svg?seed=${
+            rowItem.first_name + ' ' + rowItem.last_name
+          }`}
         />
       );
     },
@@ -59,7 +61,7 @@ export const UserListTableColumns: ColumnDef<UsersType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(rowItem.user.email)}
+              onClick={() => navigator.clipboard.writeText(rowItem.email)}
             >
               Copy payment ID
             </DropdownMenuItem>

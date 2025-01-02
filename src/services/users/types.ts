@@ -1,14 +1,11 @@
 export type UsersType = {
-  user: {
-    img_url: string;
-    full_name: string;
-    email: string;
-  };
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
   role: string;
-  country: string;
-  registration_date: string;
-  documents_uploaded: string;
-  permissions: string[];
-  activity_type: string;
-  fraud_rate: number;
+  branch_id: string;
+  ID: string;
+  created_at: string;
+  updated_at: string;
 };
