@@ -4,6 +4,7 @@ import http from '@/lib/axios';
 import { HandleApiError } from '..';
 import { ClientFormValues } from '@/app/(system)/(main)/clients/edit-client';
 import { revalidatePath } from 'next/cache';
+import { AxiosError } from 'axios';
 
 export async function fetchClients() {
   try {
@@ -25,12 +26,15 @@ export async function fetchClient(id: string) {
   }
 }
 
-export async function createClient(values: boolean) {
+export async function createClient(values: ClientFormValues) {
   try {
-    const response = await http.post(`/clients`, values);
-
-    return response.data.data;
+    const res = await http.post(`/clients`, values);
+    console.log(res);
+    revalidatePath('/clients');
   } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data?.message;
+    }
     HandleApiError(error);
   }
 }

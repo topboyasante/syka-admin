@@ -32,6 +32,7 @@ const ClientFormSchema = z.object({
     .regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'),
   sex: z.enum(['male', 'female', 'other', 'prefer_not_to_say']),
   country: z.string().min(1, 'Country is required'),
+  city: z.string().min(1, 'City is required'),
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   phone: z
     .string()
@@ -71,6 +72,7 @@ export default function EditClient({ client, open, onClose }: EditClientProps) {
       company_name: client.company_name,
       sex: client.sex,
       country: client.country,
+      city: client.city,
     },
   });
 
@@ -203,6 +205,21 @@ export default function EditClient({ client, open, onClose }: EditClientProps) {
                     </RequiredLabel>
                     <FormControl>
                       <Input placeholder="Enter your country" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <RequiredLabel>
+                      <FormLabel>City</FormLabel>
+                    </RequiredLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your city" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
