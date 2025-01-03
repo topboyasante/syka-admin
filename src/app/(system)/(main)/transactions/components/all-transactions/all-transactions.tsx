@@ -1,8 +1,9 @@
 import DataTable from '@/components/ui/data-table';
 import React from 'react';
 // import { TRANSACTIONS_LIST } from '../../data';
-import { TransactionTableColumns } from './columns';
+
 import { fetchTransactions } from '@/services/transactions';
+import { TransactionTableColumns } from './columns';
 
 async function AllTransactions() {
   const TRANSACTIONS_LIST = await fetchTransactions();
