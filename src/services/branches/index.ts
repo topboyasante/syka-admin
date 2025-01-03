@@ -6,6 +6,7 @@ import { HandleApiError } from '..';
 import { ApiResponse, ErrorResponse } from '../types';
 import { Branch, BranchResponse } from './types';
 import { BranchFormValues } from '@/app/(system)/(main)/components/branches/create-branch';
+import { revalidatePath } from 'next/cache';
 
 /**
  * Fetches all branches
@@ -51,6 +52,7 @@ export async function createBranch(
       '/branches',
       values
     );
+    revalidatePath("/");
     return {
       error: false,
       message: response.data.message,
@@ -76,6 +78,7 @@ export async function editBranch(
       `/branches/${id}`,
       values
     );
+    revalidatePath("/");
     return {
       error: false,
       message: response.data.message,

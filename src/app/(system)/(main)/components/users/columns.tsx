@@ -61,13 +61,11 @@ export const UserListTableColumns: ColumnDef<UsersType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(rowItem.email)}
+              onClick={() => navigator.clipboard.writeText(rowItem.ID)}
             >
-              Copy payment ID
+              Copy User ID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -81,7 +81,7 @@ export default function SystemLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ProgressBar className="fixed top-0 h-1 bg-primary">
+   
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
@@ -95,6 +95,5 @@ export default function SystemLayout({
           <main className="flex-1 overflow-y-auto px-4 py-4">{children}</main>
         </SidebarInset>
       </SidebarProvider>
-    </ProgressBar>
   );
 }

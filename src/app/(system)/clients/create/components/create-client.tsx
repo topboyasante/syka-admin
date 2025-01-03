@@ -1,16 +1,5 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Client } from './data';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -18,36 +7,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { updateClient } from '@/services/clients';
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { createClient } from "@/services/clients";
+import { toast } from "sonner";
+import { PhoneInput } from "@/components/ui/phone-input";
+import CountrySelect from "@/components/ui/country-select";
 
 const ClientFormSchema = z.object({
-  first_name: z.string().min(1, 'First name is required'),
-  last_name: z.string().min(1, 'Last name is required'),
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
   dob: z
     .string()
-    .min(1, 'Date of birth is required')
-    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format'),
-  sex: z.enum(['male', 'female', 'other', 'prefer_not_to_say']),
-  country: z.string().min(1, 'Country is required'),
-  city: z.string().min(1, 'City is required'),
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+    .min(1, "Date of birth is required")
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
+  sex: z.enum(["male", "female", "other", "prefer_not_to_say"]),
+  country: z.string().min(1, "Country is required"),
+  city: z.string().min(1, "City is required"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
   phone: z
     .string()
-    .min(1, 'Phone number is required')
-    .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format'),
-  company_name: z.string().min(1, 'Company name is required'),
+    .min(1, "Phone number is required")
+    .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
+  company_name: z.string().min(1, "Company name is required"),
 });
 
 export type ClientFormValues = z.infer<typeof ClientFormSchema>;
-
-interface EditClientProps {
-  client: Client;
-  open: boolean;
-  onClose: () => void;
-}
 
 function RequiredLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -58,49 +55,45 @@ function RequiredLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function EditClient({ client, open, onClose }: EditClientProps) {
+export default function CreateClient() {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<ClientFormValues>({
     resolver: zodResolver(ClientFormSchema),
     defaultValues: {
-      first_name: client.first_name,
-      last_name: client.last_name,
-      dob: client.dob,
-      email: client.email,
-      phone: client.phone,
-      company_name: client.company_name,
-      sex: client.sex,
-      country: client.country,
-      city: client.city,
+      first_name: "",
+      last_name: "",
+      dob: "",
+      email: "",
+      phone: "",
+      company_name: "",
+      sex: "other",
+      country: "",
+      city: "",
     },
   });
 
   async function onSubmit(data: ClientFormValues) {
     setIsLoading(true);
 
-    try {
-      await updateClient(data, client.ID);
-      onClose();
-    } catch (error) {
-      console.error('Error updating branch:', error);
-    } finally {
-      setIsLoading(false);
+    const res = await createClient(data);
+    setIsLoading(false);
+    if (res) {
+      toast.error(res);
+    } else {
+      toast.success("Created client successfully");
+      form.reset();
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] my-5 h-[500px] overflow-y-scroll">
-        <DialogHeader>
-          <DialogTitle>Edit Client</DialogTitle>
-        </DialogHeader>
+    <div className="container mx-auto py-8">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6">Create Client</h1>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
-            <div className="grid gap-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* First 4 fields in 2 columns */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="first_name"
@@ -152,6 +145,40 @@ export default function EditClient({ client, open, onClose }: EditClientProps) {
               />
               <FormField
                 control={form.control}
+                name="sex"
+                render={({ field }) => (
+                  <FormItem>
+                    <RequiredLabel>
+                      <FormLabel>Sex</FormLabel>
+                    </RequiredLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="male">Male</SelectItem>
+                          <SelectItem value="female">Female</SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="prefer_not_to_say">
+                            Prefer not to say
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Remaining fields in single column */}
+            <div className="grid grid-cols-1 gap-6">
+              <FormField
+                control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
@@ -174,7 +201,11 @@ export default function EditClient({ client, open, onClose }: EditClientProps) {
                       <FormLabel>Phone</FormLabel>
                     </RequiredLabel>
                     <FormControl>
-                      <Input placeholder="Enter your phone" {...field} />
+                      <PhoneInput
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -204,7 +235,11 @@ export default function EditClient({ client, open, onClose }: EditClientProps) {
                       <FormLabel>Country</FormLabel>
                     </RequiredLabel>
                     <FormControl>
-                      <Input placeholder="Enter your country" {...field} />
+                      <CountrySelect
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -225,33 +260,15 @@ export default function EditClient({ client, open, onClose }: EditClientProps) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="sex"
-                render={({ field }) => (
-                  <FormItem>
-                    <RequiredLabel>
-                      <FormLabel>Sex</FormLabel>
-                    </RequiredLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your sex" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <div className="flex justify-end gap-3">
-              <Button type="button" variant="outline" onClick={onClose}>
-                Cancel
-              </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? 'Saving...' : 'Save Changes'}
+                {isLoading ? "Saving..." : "Create Client"}
               </Button>
             </div>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }

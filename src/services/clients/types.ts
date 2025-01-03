@@ -7,7 +7,7 @@ export interface Client {
   first_name: string;
   last_name: string;
   dob: string;
-  sex: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  sex: "male" | "female" | "other" | "prefer_not_to_say";
   identity: Identity;
   email: string;
   phone: string;

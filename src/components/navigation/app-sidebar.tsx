@@ -1,34 +1,31 @@
-import {
-  Users,
-  LineChart,
-  DollarSign,
-  BarChart3,
-  ClipboardList,
-  Building2,
-  LayoutDashboard,
-  HeadphonesIcon,
-  Settings,
-  User,
-  Shield,
-  ChevronDown,
-} from 'lucide-react';
-import { usePathname } from 'next/navigation';
-import React, { useState } from 'react';
+import { ProgressBarLink } from '@/components/ui/progress-bar';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarMenuItem,
-  SidebarMenuButton,
   SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { ProgressBarLink } from '@/components/ui/progress-bar';
+import {
+  BarChart3,
+  Building2,
+  ClipboardList,
+  DollarSign,
+  HeadphonesIcon,
+  LayoutDashboard,
+  LineChart,
+  Settings,
+  Shield,
+  User,
+  Users
+} from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import React from 'react';
+import NavCommand from './nav-command';
 import NavHeader from './nav-header';
 import { NavUser } from './nav-user';
-import NavCommand from './nav-command';
-import { Separator } from '../ui/separator';
-import path from 'path';
 
 const NAV_LINKS = [
   {
@@ -45,57 +42,57 @@ const NAV_LINKS = [
   },
   {
     id: 3,
+    name: 'Client Management',
+    path: '/clients',
+    icon: User,
+  },
+  {
+    id: 4,
     name: 'Revenue & Fees',
     path: '/revenue',
     icon: DollarSign,
   },
   {
-    id: 4,
+    id: 5,
     name: 'Liquidity & Exchange Rate',
     path: '/liquidity',
     icon: BarChart3,
   },
   {
-    id: 5,
+    id: 6,
     name: 'Compliance & Reporting',
     path: '/compliance',
     icon: ClipboardList,
   },
   {
-    id: 6,
+    id: 7,
     name: 'Partner & Bank',
     path: '/partners',
     icon: Building2,
   },
   {
-    id: 7,
+    id: 8,
     name: 'Dashboard Analytics',
     path: '/analytics',
     icon: LayoutDashboard,
   },
   {
-    id: 8,
+    id: 9,
     name: 'Support & Help Desk',
     path: '/support',
     icon: HeadphonesIcon,
   },
   {
-    id: 9,
+    id: 10,
     name: 'System Admin',
     path: '/admin',
     icon: Settings,
   },
   {
-    id: 10,
+    id: 11,
     name: 'Security Management',
     path: '/security',
     icon: Shield,
-  },
-  {
-    id: 11,
-    name: 'Clients',
-    path: '/clients',
-    icon: User,
   },
 ];
 

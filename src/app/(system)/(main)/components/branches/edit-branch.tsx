@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import React from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -17,40 +17,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useState, useEffect } from 'react';
-import { editBranch } from '@/services/branches';
-import { toast } from 'sonner';
+} from "@/components/ui/select";
+import { useState, useEffect } from "react";
+import { editBranch } from "@/services/branches";
+import { toast } from "sonner";
+import { PhoneInput } from "@/components/ui/phone-input";
+import CountrySelect from "@/components/ui/country-select";
 
 const branchFormSchema = z.object({
   name: z
     .string()
-    .min(2, 'Branch name must be at least 2 characters')
-    .max(100, 'Branch name cannot exceed 100 characters'),
+    .min(2, "Branch name must be at least 2 characters")
+    .max(100, "Branch name cannot exceed 100 characters"),
   address: z
     .string()
-    .min(5, 'Address must be at least 5 characters')
-    .max(200, 'Address cannot exceed 200 characters'),
+    .min(5, "Address must be at least 5 characters")
+    .max(200, "Address cannot exceed 200 characters"),
   country: z
     .string()
-    .min(2, 'Country must be at least 2 characters')
-    .max(100, 'Country name cannot exceed 100 characters'),
+    .min(2, "Country must be at least 2 characters")
+    .max(100, "Country name cannot exceed 100 characters"),
   phone: z
     .string()
     .regex(
       /^\+?[1-9]\d{1,14}$/,
-      'Please enter a valid phone number in international format'
+      "Please enter a valid phone number in international format"
     ),
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().email("Please enter a valid email address"),
   parent_branch_id: z.string().optional(),
 });
 
@@ -115,12 +117,12 @@ export function EditBranchModal({
     try {
       const response = await editBranch(data, branch.ID);
       if (!response.error) {
-        toast.success('Branch editted successfully');
+        toast.success("Branch edited successfully");
       }
 
       onClose();
     } catch (error) {
-      console.error('Error updating branch:', error);
+      console.error("Error updating branch:", error);
     } finally {
       setIsLoading(false);
     }
@@ -211,7 +213,11 @@ export function EditBranchModal({
                       <FormLabel>Country</FormLabel>
                     </RequiredLabel>
                     <FormControl>
-                      <Input placeholder="Enter country" {...field} />
+                      <CountrySelect
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -227,10 +233,10 @@ export function EditBranchModal({
                       <FormLabel>Phone Number</FormLabel>
                     </RequiredLabel>
                     <FormControl>
-                      <Input
-                        type="tel"
-                        placeholder="Enter phone number"
+                      <PhoneInput
                         {...field}
+                        value={field.value}
+                        onChange={field.onChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -264,7 +270,7 @@ export function EditBranchModal({
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? 'Saving...' : 'Save Changes'}
+                {isLoading ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </form>

@@ -2,7 +2,7 @@
 
 import http from '@/lib/axios';
 import { HandleApiError } from '..';
-import { ClientFormValues } from '@/app/(system)/(main)/clients/edit-client';
+import { ClientFormValues } from '@/app/(system)/clients/edit-client';
 import { revalidatePath } from 'next/cache';
 import { AxiosError } from 'axios';
 
